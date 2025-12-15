@@ -1,0 +1,256 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+
+class TreeNode {
+public:
+    int data;
+    TreeNode *left, *right;
+
+    TreeNode(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+
+TreeNode* insert(TreeNode* root, int data) {
+    if (root == NULL)
+        return new TreeNode(data);
+
+    queue<TreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        TreeNode* temp = q.front();
+        q.pop();
+
+        if (!temp->left) {
+            temp->left = new TreeNode(data);
+            break;
+        } else
+            q.push(temp->left);
+
+        if (!temp->right) {
+            temp->right = new TreeNode(data);
+            break;
+        } else
+            q.push(temp->right);
+    }
+    return root;
+}
+
+bool search(TreeNode* root, int key) {
+    if (root == NULL)
+        return false;
+    if (root->data == key)
+        return true;
+    return search(root->left, key) || search(root->right, key);
+}
+
+int height(TreeNode* root) {
+    if (root == NULL)
+        return -1;
+    return 1 + max(height(root->left), height(root->right));
+}
+
+int countNodes(TreeNode* root) {
+    if (root == NULL)
+        return 0;
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+
+int countLeafNodes(TreeNode* root) {
+    if (root == NULL)
+        return 0;
+    if (root->left == NULL && root->right == NULL)
+        return 1;
+    return countLeafNodes(root->left) + countLeafNodes(root->right);
+}
+
+
+void preorder(TreeNode* root) {
+    if (root) {
+        cout << root->data << " ";
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+void inorder(TreeNode* root) {
+    if (root) {
+        inorder(root->left);
+        cout << root->data << " ";
+        inorder(root->right);
+    }
+}
+
+void postorder(TreeNode* root) {
+    if (root) {
+        postorder(root->left);
+        postorder(root->right);
+        cout << root->data << " ";
+    }
+}
+
+void levelOrder(TreeNode* root) {
+    if (!root)
+        return;
+
+    queue<TreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        TreeNode* node = q.front();
+        q.pop();
+
+        cout << node->data << " ";
+
+        if (node->left)
+            q.push(node->left);
+        if (node->right)
+            q.push(node->right);
+    }
+}
+
+
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+Node* insertBegin(Node* start, int data) {
+    Node* temp = new Node();
+    temp->data = data;
+
+    if (start == NULL) {
+        temp->next = temp;
+        return temp;
+    }
+
+    Node* curr = start;
+    while (curr->next != start)
+        curr = curr->next;
+
+    temp->next = start;
+    curr->next = temp;
+    start = temp;
+    return start;
+}
+
+Node* insertEnd(Node* start, int data) {
+    Node* temp = new Node();
+    temp->data = data;
+
+    if (start == NULL) {
+        temp->next = temp;
+        return temp;
+    }
+
+    Node* curr = start;
+    while (curr->next != start)
+        curr = curr->next;
+
+    curr->next = temp;
+    temp->next = start;
+    return start;
+}
+
+Node* deleteNode(Node* start, int key) {
+    if (start == NULL)
+        return NULL;
+
+    if (start->data == key && start->next == start) {
+        delete start;
+        return NULL;
+    }
+
+    if (start->data == key) {
+        Node* curr = start;
+        while (curr->next != start)
+            curr = curr->next;
+
+        curr->next = start->next;
+        Node* temp = start;
+        start = start->next;
+        delete temp;
+        return start;
+    }
+
+    Node* prev = start;
+    Node* curr = start->next;
+
+    while (curr != start && curr->data != key) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    if (curr == start) {
+        cout << "Element not found\n";
+        return start;
+    }
+
+    prev->next = curr->next;
+    delete curr;
+    return start;
+}
+
+void display(Node* start) {
+    if (start == NULL) {
+        cout << "List is empty\n";
+        return;
+    }
+
+    Node* curr = start;
+    do {
+        cout << curr->data << " ";
+        curr = curr->next;
+    } while (curr != start);
+    cout << endl;
+}
+
+
+int main() {
+
+    TreeNode* root = NULL;
+    int values[] = {10, 20, 30, 40, 50};
+
+    for (int v : values)
+        root = insert(root, v);
+
+    cout << "Search 30: " << (search(root, 30) ? "Found" : "Not Found") << endl;
+    cout << "Height of tree: " << height(root) << endl;
+    cout << "Total nodes: " << countNodes(root) << endl;
+    cout << "Leaf nodes: " << countLeafNodes(root) << endl;
+
+    cout << "\nPreorder Traversal: ";
+    preorder(root);
+
+    cout << "\nInorder Traversal: ";
+    inorder(root);
+
+    cout << "\nPostorder Traversal: ";
+    postorder(root);
+
+    cout << "\nLevel Order Traversal: ";
+    levelOrder(root);
+
+    cout << "\n\n";
+
+    Node* start = NULL;
+
+    start = insertBegin(start, 10);
+    start = insertEnd(start, 20);
+    start = insertEnd(start, 30);
+    start = insertBegin(start, 5);
+
+    cout << "Circular Linked List: ";
+    display(start);
+
+    start = deleteNode(start, 20);
+    cout << "After deleting 20: ";
+    display(start);
+
+    return 0;
+}
