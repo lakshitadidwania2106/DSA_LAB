@@ -79,6 +79,17 @@ struct node* delete_node(struct node *start, int key) {
  free(curr);
  return start;
 }
+struct node* reverse(struct node *start) {
+ struct node *prev = NULL, *curr = start, *temp = NULL;
+ while (curr != NULL) {
+ temp = curr->next; // store next
+ curr->next = prev; // reverse link
+ prev = curr; // move prev
+ curr = temp; // move curr
+ }
+ start = prev;
+ return start;
+}
 
 struct node* add_lists(struct node *l1, struct node *l2) {
  struct node *result = NULL;
