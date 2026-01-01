@@ -1,0 +1,64 @@
+# Node structure
+class Node:
+def __init__(self, data):
+self.data = data
+self.left = None
+self.right = None
+
+# Preorder Traversal (Root -&gt; Left -&gt; Right)
+def preorder(root):
+if root:
+print(root.data, end=&quot; &quot;)
+preorder(root.left)
+preorder(root.right)
+
+# Inorder Traversal (Left -&gt; Root -&gt; Right)
+def inorder(root):
+if root:
+inorder(root.left)
+print(root.data, end=&quot; &quot;)
+inorder(root.right)
+
+# Postorder Traversal (Left -&gt; Right -&gt; Root)
+def postorder(root):
+if root:
+postorder(root.left)
+postorder(root.right)
+
+print(root.data, end=&quot; &quot;)
+
+# Level Order Traversal (BFS)
+def level_order(root):
+if not root:
+return
+
+q = deque([root])
+while q:
+node = q.popleft()
+print(node.data, end=&quot; &quot;)
+if node.left:
+q.append(node.left)
+if node.right:
+q.append(node.right)
+
+# -------- Main Program --------
+if __name__ == &quot;__main__&quot;:
+# Create tree
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+
+print(&quot;Preorder Traversal:&quot;)
+preorder(root)
+
+print(&quot;\nInorder Traversal:&quot;)
+
+inorder(root)
+
+print(&quot;\nPostorder Traversal:&quot;)
+postorder(root)
+
+print(&quot;\nLevel Order Traversal:&quot;)
+level_order(root)

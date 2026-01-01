@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+ int data;
+ struct node *prev;
+ struct node *next;
+}
+
+struct node* insert_begin(struct node *start, int data) {
+ struct node *temp;
+ temp = (struct node*)malloc(sizeof(struct node));
+ temp->data = data;
+ temp->prev = NULL;
+ temp->next = start;
+ if (start != NULL)
+ start->prev = temp;
+ start = temp;
+ return start;
+}
+
+struct node* insert_end(struct node *start, int data) {
+ struct node *temp, *curr;
+ temp = (struct node*)malloc(sizeof(struct node));
+ temp->data = data;
+ temp->next = NULL;
+ if (start == NULL) {
+ temp->prev = NULL;
+ start = temp;
+ return start;
+ }
+ curr = start;
+ while (curr->next != NULL)
+ curr = curr->next;
+ curr->next = temp;
+ temp->prev = curr;
+ return start;
+}
+

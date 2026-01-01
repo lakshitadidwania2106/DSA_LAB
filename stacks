@@ -1,0 +1,118 @@
+
+nums = list(map(int, input().split()))
+n = len(nums)
+
+result = [-1] * n
+stack = []
+
+for i in range(n):
+    while stack and nums[i] > nums[stack[-1]]:
+        index = stack.pop()
+        result[index] = nums[i]
+    stack.append(i)
+
+
+print(" ".join(map(str, result)))
+
+def maximalRectangle(matrix):
+    if not matrix:
+        return 0
+
+    cols = len(matrix[0])
+    heights = [0] * cols
+    max_area = 0
+
+    for row in matrix:
+        for i in range(cols):
+            if row[i] == 1:
+                heights[i] += 1
+            else:
+                heights[i] = 0
+
+        stack = []
+        i = 0
+        while i <= cols:
+            curr = heights[i] if i < cols else 0
+            if not stack or curr >= heights[stack[-1]]:
+                stack.append(i)
+                i += 1
+            else:
+                h = heights[stack.pop()]
+                w = i if not stack else i - stack[-1] - 1
+                max_area = max(max_area, h * w)
+
+    return max_area
+
+
+
+rows = int(input().strip())
+cols = int(input().strip())
+
+# Read ALL remaining numbers at once
+nums = list(map(int, input().split()))
+
+matrix = []
+idx = 0
+for _ in range(rows):
+    matrix.append(nums[idx:idx + cols])
+    idx += cols
+
+print(maximalRectangle(matrix))
+
+ef infix_to_postfix(expression):
+    stack = []
+    postfix = []
+    
+    precedence = {'+':1, '-':1, '*':2, '/':2}
+
+    for ch in expression:
+        # If operand, add to postfix
+        if ch.isalnum():
+            postfix.append(ch)
+
+        # If '(', push to stack
+        elif ch == '(':
+            stack.append(ch)
+
+        # If ')', pop until '('
+        elif ch == ')':
+            while stack and stack[-1] != '(':
+                postfix.append(stack.pop())
+            stack.pop()  # remove '('
+
+   
+        else:
+            while (stack and stack[-1] != '(' and
+                   precedence[ch] <= precedence[stack[-1]]):
+                postfix.append(stack.pop())
+            stack.append(ch)
+
+    
+    while stack:
+        postfix.append(stack.pop())
+
+    return ''.join(postfix)
+
+
+expr = input().strip()
+print(infix_to_postfix(expr))
+stack = []
+
+# Read input elements
+elements = list(map(int, input().split()))
+
+# Push elements into stack
+for e in elements:
+    stack.append(e)
+
+while stack:
+    print(stack.pop(), end=" ")
+
+print()  # new line
+
+for e in elements:
+    stack.append(e)
+
+print(stack[-1])
+
+print(len(stack))

@@ -1,0 +1,134 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node *next;
+};
+
+struct node* insert_begin(struct node *start, int item) {
+ struct node *temp;
+ temp = (struct node*)malloc(sizeof(struct node));
+ temp->data = item;
+ temp->next = start;
+ start = temp;
+ return start;
+}
+
+struct node* insert_end(struct node *start, int data) {
+ struct node *temp, *curr;
+ temp = (struct node*)malloc(sizeof(struct node));
+ temp->data = data;
+ temp->next = NULL;
+ if (start == NULL)
+ return temp;
+ curr = start;
+ while (curr->next != NULL)
+ curr = curr->next;
+ curr->next = temp;
+ return start;
+}
+
+void display(struct node *start) {
+ struct node *curr = start;
+ while (curr != NULL) {
+ printf("%d -> ", curr->data);
+ curr = curr->next;
+ }
+ printf("NULL\n");
+}
+
+int search(struct node *start, int key) {
+ struct node *curr = start;
+ while (curr != NULL) {
+ if (curr->data == key)
+ return 1;
+ curr = curr->next;
+ }
+ return 0;
+}
+
+int count_nodes(struct node *start) {
+ int count = 0;
+ struct node *curr = start;
+ while (curr != NULL) {
+ count++;
+ curr = curr->next;
+ }
+ return count;
+}
+
+struct node* delete_node(struct node *start, int key) {
+ struct node *curr, *prev;
+ curr = start;
+ prev = NULL;
+ if (curr != NULL && curr->data == key) {
+ start = curr->next;
+ free(curr);
+ return start;
+ }
+ while (curr != NULL && curr->data != key) {
+ prev = curr;
+ curr = curr->next;
+ }
+ if (curr == NULL) {
+ printf("Element not found\n");
+ return start;
+ }
+ prev->next = curr->next;
+ free(curr);
+ return start;
+}
+struct node* reverse(struct node *start) {
+ struct node *prev = NULL, *curr = start, *temp = NULL;
+ while (curr != NULL) {
+ temp = curr->next; // store next
+ curr->next = prev; // reverse link
+ prev = curr; // move prev
+ curr = temp; // move curr
+ }
+ start = prev;
+ return start;
+}
+
+struct node* add_lists(struct node *l1, struct node *l2) {
+ struct node *result = NULL;
+ struct node *curr1 = l1, *curr2 = l2;
+ int carry = 0, sum;
+ while (curr1 != NULL || curr2 != NULL || carry != 0) 
+ {
+ sum = carry;
+ if (curr1 != NULL)
+ {
+ sum += curr1->data;
+ curr1 = curr1->next;
+ }
+ if (curr2 != NULL) 
+ {
+ sum += curr2->data;
+ curr2 = curr2->next;
+ }
+ carry = sum / 10;
+ result = insert_end(result, sum % 10);
+ }
+ return result;
+}
+
+int main() {
+ struct node *l1 = NULL, *l2 = NULL, *result = NULL;
+
+ l1 = insert_end(l1, 2);
+ l1 = insert_end(l1, 4);
+ l1 = insert_end(l1, 3);
+ l2 = insert_end(l2, 5);
+ l2 = insert_end(l2, 6);
+ l2 = insert_end(l2, 4);
+ printf("no1:\n");
+ display(l1);
+ printf("no2:\n");
+ display(l2);
+ result = add_lists(l1, l2);
+ printf("Sum:\n");
+ display(result);
+ return 0;
+}
