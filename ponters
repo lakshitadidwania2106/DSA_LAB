@@ -1,0 +1,131 @@
+#include <stdio.h>
+
+void productExceptSelf(int* nums, int n, int* output) {
+    // Step 1: Calculate left product for each index
+    output[0] = 1; // Nothing on the left of first element
+    for (int i = 1; i < n; i++) {
+        output[i] = output[i - 1] * nums[i - 1];
+    }
+
+    // Step 2: Calculate right product and multiply it to existing output
+    int rightProduct = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        output[i] = output[i] * rightProduct;
+        rightProduct *= nums[i];
+    }
+}
+
+int main() {
+    int nums[100000], output[100000];
+    int n = 0;
+
+    // Read until newline or EOF
+    while (scanf("%d", &nums[n]) == 1) {
+        n++;
+        if (getchar() == '\n') break;
+    }
+
+    productExceptSelf(nums, n, output);
+
+    for (int i = 0; i < n; i++) {
+        printf("%d ", output[i]);
+    }
+
+    return 0;
+}
+
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int lols(string s){int li[256];
+                  for(int i=0;i<256;i++)li[i]=-1;
+int maxlen=0;
+int start=0;
+for(int end=0;end<s.length();end++){
+    if(li[(unsigned char)s[end]]>=start)
+        li[(unsigned char)s[end]]=end;
+        start=li[(unsigned char)s[end]]+1;
+    maxlen=max(maxlen,end-start+1);
+}return maxlen;}
+int main() {
+string s;
+    cin>>s;
+    cout<<lols(s)<<endl;
+    return 0;
+}
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+   int i,n; cin>>n;
+    int arr[n];
+   
+    for(i=0;i<n;i++){cin>>arr[i];}
+    int m;
+    cin>>m;
+    int count=0;
+    for(i=0;i<n;i++){if(arr[i]==m)count+=1;}
+    cout<<count; 
+    return 0;
+}
+#include <stdio.h>
+
+void reverse(int arr[], int start, int end) {
+    while (start < end) {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+void rotate_array(int arr[], int n, int k) {
+    k = k % n; // Normalize rotation
+    if (k == 0) {
+        // No rotation needed
+        return;
+    }
+
+    // Step 1: Reverse the entire array
+    reverse(arr, 0, n - 1);
+
+    // Step 2: Reverse the first k elements
+    reverse(arr, 0, k - 1);
+
+    // Step 3: Reverse the rest
+    reverse(arr, k, n - 1);
+}
+
+int main() {
+    int n, k;
+    scanf("%d", &n);
+    int arr[n];
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    scanf("%d", &k);
+
+    rotate_array(arr, n, k);
+
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
+
+    
