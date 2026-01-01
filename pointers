@@ -128,4 +128,61 @@ int main() {
     return 0;
 }
 
+  #include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */ 
+    int n;
+    int i;
+    cin>>n;
+    int a[n], pos[n], neg[n];
+    int p=0,q=0;
+
+    for(i=0;i<n;i++) {
+        cin>>a[i];
+        if(a[i]>0)
+        {pos[p++]=a[i];}
+        else
+            neg[q++]=a[i];
+    }
+p=0;q=0;
+   for(i=0;i<n;i++){if(i%2==0)a[i]=pos[p++];
+                   else a[i]=neg[q++];}
+ for(i=0;i<n;i++) {
+        cout<<a[i];cout<<" ";}
+    return 0;
+}
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    int n;
+    int i;
+    int s,es;
+    cin>>n;
+    int a[n];
+    for(i=0;i<n-1;i++){cin>>a[i];}
     
+    for(i=0;i<n-1;i++){
+        s+=a[i];}
+   es=n*(n+1)/2;
+    cout<<es-s;
+        
+      
+           
+    
+    return 0;
+}
+  
